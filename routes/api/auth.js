@@ -1,5 +1,4 @@
 // Handle getting JSON webtoken for authentication 
-// For logging in? 
 
 const express = require('express');
 // Use express router
@@ -26,7 +25,7 @@ router.get('/', auth, async (req, res) => {
 });
 
 // @route POST  api/auth 
-// @desc   Authenticate User and get token 
+// @desc   Authenticate User and get token / Logging in 
 // @access      Public 
 router.post('/',[ 
     check('email','Please include a valid email').isEmail(),

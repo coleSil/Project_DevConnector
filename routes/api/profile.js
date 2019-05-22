@@ -1,12 +1,27 @@
 // Routes for fetching and updating profiles and other 
 
 const express = require('express');
-// Use express router
-const router = express.Router();
+const router = express.Router();// Use express router
+const auth = require('../../middleware/auth');
+const Profile = require('../../models/Profile');
+const User = require('../../models/User');
 
-// @route GET  api/profile 
-// @desc Test  route
-// @access     Public 
-router.get('/', (req, res) => res.send('Profile Route'));
+// @route GET  api/profile/me 
+// @desc       Get current user's profile 
+// @access     Private  
+router.get('/me', auth, async (req, res) => {
+    try{
+        const profile = await Profile.findOne({ user: req.user.id }).populate('user',['name', 'avatar']);
+
+        if(!profile){
+            return res.status(400).json({ msg: 'There is no profile for this user'  });
+        }
+
+        res.json(profile);
+    } catch(err) {
+        console.error( error.message );
+        res.status(500).send('server error');
+    }
+});
 
 module.exports = router;
